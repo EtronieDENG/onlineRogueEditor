@@ -300,16 +300,16 @@ class Rogue:
                 if config.debug:
                     self.editOffline = True
 
-                slot = int(fh_getIntegerInput('Enter Slot', 1, 5, zeroCancel=False, softCancel=False, allowSkip=False))
+                slot = int(fh_getIntegerInput('想改第几个存档？', 1, 5, zeroCancel=False, softCancel=False, allowSkip=False))
 
                 if self.editOffline:
 
                     if not os.path.exists('./trainer.json'):
-                        cFormatter.print(Color.INFO, 'Trainer.json does not exist.')
+                        cFormatter.print(Color.INFO, 'Trainer.json不存在。')
                         continue
                     
                     if not os.path.exists(f'./slot_{slot}.json'):
-                        cFormatter.print(Color.INFO, f'slot_{slot} does not exist.')
+                        cFormatter.print(Color.INFO, f'slot_{slot}不存在。')
                         continue
 
                     gameData = self.__fh_loadDataFromJSON('trainer.json')
@@ -365,7 +365,7 @@ class Rogue:
         Exceptions:
         - Handles various errors, such as network issues or invalid responses, by printing debug information.
         """
-        cFormatter.print(Color.INFO, 'Fetching trainer data...')
+        cFormatter.print(Color.INFO, '获取数据中。。。')
         if self.useScripts:
             try:
                 response = self.fh_makeRequest(f'{self.TRAINER_DATA_URL}{self.clientSessionId}')
@@ -377,7 +377,7 @@ class Rogue:
                         # data = json.loads(decompressed_data)
                         data = json.loads(response)
                         self.__fh_writeJSONData(data, 'trainer.json', False)
-                        cFormatter.print(Color.GREEN, 'Successfully fetched trainer data.')
+                        cFormatter.print(Color.GREEN, '成功获取训练家数据。')
                         return data
                     except json.JSONDecodeError as e:
                         cFormatter.print(Color.WARNING, f'Error decoding JSON: {e}', isLogging=True)
@@ -391,7 +391,7 @@ class Rogue:
                 response = self.session.get(f'{self.TRAINER_DATA_URL}{self.clientSessionId}', headers=self.headers, verify=config.useCaCert)
                 response.raise_for_status()
                 if response.content:  # Check if the response content is not empty
-                    cFormatter.print(Color.GREEN, 'Successfully fetched trainer data.')
+                    cFormatter.print(Color.GREEN, '成功获取训练家数据。')
                     data = response.json()
                     self.trainerId = data.get('trainerId')
                     self.secretId = data.get('secretId')
@@ -429,7 +429,7 @@ class Rogue:
             - cFormatter, Color: Used for formatting and printing colored output messages.
             - fh_handleErrorResponse: Used to handle and process error responses from API requests.
         """
-        cFormatter.print(Color.INFO, f'Fetching data for Slot {slot}...')
+        cFormatter.print(Color.INFO, f'获取存档 {slot} 数据中。。。')
         
         if self.useScripts:
             try:
@@ -443,7 +443,7 @@ class Rogue:
                         data = json.loads(response)
                         self.__fh_writeJSONData(data, f'slot_{slot}.json', False)
                         self.slot = slot
-                        cFormatter.print(Color.GREEN, f'Successfully fetched data for slot {self.slot}.')
+                        cFormatter.print(Color.GREEN, f'成功获取存档数据：{self.slot}.')
                         return data
                     except json.JSONDecodeError as e:
                         cFormatter.print(Color.WARNING, f'Error decoding JSON: {e}', isLogging=True)
@@ -455,7 +455,7 @@ class Rogue:
                 response = self.session.get(f'{self.GAMESAVE_SLOT_URL}{slot-1}&clientSessionId={self.clientSessionId}', headers=self.headers, verify=config.useCaCert)
                 response.raise_for_status()
                 if response.content:  # Check if the response content is not empty
-                    cFormatter.print(Color.GREEN, f'Successfully fetched data for slot {self.slot}.')
+                    cFormatter.print(Color.GREEN, f'成功获取存档数据：{self.slot}.')
                     data = response.json()
                     self.__fh_writeJSONData(data, f'slot_{slot}.json', False)
                     self.slot = slot
@@ -487,7 +487,7 @@ class Rogue:
             - requests: Used for making HTTP requests to logout from the API.
             - cFormatter, Color: Used for formatting and printing colored output messages.
         """
-        cFormatter.print(Color.INFO, 'Terminating session, logging out.')
+        cFormatter.print(Color.INFO, '已登出。')
         
         try:
             self.session.get(f'{self.LOGOUT_URL}', headers=self.headers)
@@ -495,7 +495,7 @@ class Rogue:
                 self.session.close()
             if self.useScripts:
                 self.driver.quit()
-            cFormatter.print(Color.BRIGHT_GREEN, 'Session terminated successfully.')
+            cFormatter.print(Color.BRIGHT_GREEN, '会话已结束。')
             sleep(5)
             exit(0)
         except requests.exceptions.RequestException as e:
@@ -550,7 +550,7 @@ class Rogue:
                 
             backupFilepath = os.path.join(self.backupDirectory, backupFilename)
             self.__fh_writeJSONData(data, backupFilepath, showSuccess=False)
-            fh_appendMessageBuffer(Color.GREEN, f'Backup created: {backupFilename}')
+            fh_appendMessageBuffer(Color.GREEN, f'备份已创建: {backupFilename}')
 
         if gameData is None:
             gameData = self.__fh_loadDataFromJSON('trainer.json')
@@ -600,7 +600,7 @@ class Rogue:
             '1': 'Restore game data',
             '2': 'Restore slot data'
         }
-        userChoice = fh_getChoiceInput("Do you want to restore game data or slot data?", choices, renderMenu=True, zeroCancel=True)
+        userChoice = fh_getChoiceInput("你想恢复数据吗？", choices, renderMenu=True, zeroCancel=True)
         
         if userChoice == '1':
             pattern = re.compile(rf'gameData\({self.trainerId}\)')
@@ -629,7 +629,7 @@ class Rogue:
         # Getting user's choice
         while True:
             choice = int(fh_getIntegerInput(
-                'What file do you want to restore?', 1, len(displayFiles),
+                '想恢复哪个文件？', 1, len(displayFiles),
                 zeroCancel=True
             ))
             chosenFile = displayFiles[choice - 1]
@@ -671,7 +671,7 @@ class Rogue:
             with open(outputFilepath, 'w') as file:
                 json.dump(data, file, indent=4)
 
-            cFormatter.print(Color.GREEN, 'Data restored and timestamp updated.')
+            cFormatter.print(Color.GREEN, '数据已恢复。')
             break
 
     # TODO IMPORTANT: Simplify
@@ -720,7 +720,7 @@ class Rogue:
         with open(filename, 'r') as f:
             game_data = json.load(f)
         try:
-            cFormatter.print(Color.INFO, 'Trying to update...')
+            cFormatter.print(Color.INFO, '更新中。。。')
             sleep(random.randint(3, 5))
             payload = {'clientSessionId': self.clientSessionId, 'session': game_data, "sessionSlotId": slot - 1,
                        'system': trainer_data}
@@ -771,25 +771,25 @@ class Rogue:
         """
         gameData: dict = self.__fh_loadDataFromJSON('trainer.json')
 
-        header = cFormatter.fh_centerText('Unlock All Starter', 55, '-')
+        header = cFormatter.fh_centerText('解锁全图鉴', 55, '-')
         cFormatter.print(Color.DEBUG, header)
 
         choices = {
-            '1': 'Yes',
-            '2': 'No'
+            '1': '是',
+            '2': '否'
         }
 
         shinyChoice = False
         #dexData
-        choice = fh_getChoiceInput('Do you want to unlock all forms of the species? (All forms are Tier 3 shinies)', choices, zeroCancel=True) == '1'
-        shinyChoice = fh_getChoiceInput('Do you want Tier 3 shinies?', choices, zeroCancel=True) == '1'
-        iv = fh_getChoiceInput('Do you want the starters to have perfect IVs?', choices, zeroCancel=True) == '1'
-        nature = fh_getChoiceInput('Do you want to unlock all natures?', choices, zeroCancel=True) == '1'
+        choice = fh_getChoiceInput('你想全形态吗？', choices, zeroCancel=True) == '1'
+        shinyChoice = fh_getChoiceInput('你想三闪吗？', choices, zeroCancel=True) == '1'
+        iv = fh_getChoiceInput('你想满6V吗？', choices, zeroCancel=True) == '1'
+        nature = fh_getChoiceInput('你想全性格吗？', choices, zeroCancel=True) == '1'
 
-        passive = fh_getChoiceInput('Do you want the starters to have the passive unlocked?', choices, zeroCancel=True) == '1'
-        ribbon = fh_getChoiceInput('Do you want to unlock win-ribbons?', choices, zeroCancel=True) == '1'
-        costReduce = int(fh_getIntegerInput('How much do you want to reduce the cost? (0 for none)', 0, 20))
-        abilityAttr = fh_getChoiceInput('Do you want to unlock all abilities including egg-moves?', choices, zeroCancel=True) == '1'
+        passive = fh_getChoiceInput('你想全被动吗？', choices, zeroCancel=True) == '1'
+        ribbon = fh_getChoiceInput('你想全胜利绸带吗？', choices, zeroCancel=True) == '1'
+        costReduce = int(fh_getIntegerInput('你想减少费用吗？建议2', 0, 20))
+        abilityAttr = fh_getChoiceInput('你想全蛋招吗？', choices, zeroCancel=True) == '1'
 
         noPassives = {member.name: member for member in self.appData.noPassiveIDs}
         combinedFormIDs = dataParser.fh_getCombinedIDs(includeStarter=True, onlyNormalForms=True)
@@ -885,7 +885,7 @@ class Rogue:
         self.__fh_writeJSONData(gameData, 'trainer.json')
 
         # Raise success message
-        raise OperationSuccessful('Written changes for all starters.')
+        raise OperationSuccessful('全图鉴已经修改')
         
     @dec_handleOperationExceptions
     def f_editStarter(self, dexId: Optional[str] = None) -> None:
@@ -986,8 +986,8 @@ class Rogue:
                 cFormatter.fh_printSeperators(55, '-', Color.INFO)
 
                 if action == 'Unlock all forms':
-                    formChoice = fh_getChoiceInput('Do you want to unlock all forms of the Species? (All forms are Tier 3 shinies)', {'1': 'Yes', '2': 'No'}, zeroCancel=True) == '1'
-                    shinyChoice = fh_getChoiceInput('Do you want Tier 3 shinies?', {'1': 'Yes', '2': 'No'}, zeroCancel=True) == '1'
+                    formChoice = fh_getChoiceInput('Do you want to unlock all forms of the Species? (All forms are Tier 3 shinies)', {'1': '是', '2': '否'}, zeroCancel=True) == '1'
+                    shinyChoice = fh_getChoiceInput('Do you want Tier 3 shinies?', {'1': '是', '2': '否'}, zeroCancel=True) == '1'
 
                     if formChoice and any(str(dexId) == str(form["speciesID"]) for form in combinedFormIDs):
                         for form in combinedFormIDs:
@@ -1060,7 +1060,7 @@ class Rogue:
                         cFormatter.print(Color.INFO, 'Skipping cost reduce.')
 
                 elif action == 'Set abilities':
-                    ability = fh_getChoiceInput('Do you want to unlock all abilities?', {'1': 'Yes', '2': 'No'}, zeroCancel=True)
+                    ability = fh_getChoiceInput('Do you want to unlock all abilities?', {'1': '是', '2': '否'}, zeroCancel=True)
                     abilityAttr = 7 if ability == '1' else 0
                     gameData["starterData"][str(dexId)]["abilityAttr"] = abilityAttr
                     changed = True
@@ -1091,7 +1091,7 @@ class Rogue:
             cFormatter.print(Color.YELLOW, f'Changes saved for {dexName}:')
             for item in changedItems:
                 cFormatter.print(Color.INFO, item)
-            raise OperationSuccessful('Successfully written all Starter Stats.')
+            raise OperationSuccessful('成功修改全图鉴')
         else:
             fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
 
@@ -1124,7 +1124,7 @@ class Rogue:
         """
         gameData = self.__fh_loadDataFromJSON('trainer.json')
 
-        header = cFormatter.fh_centerText('Edit Egg-Tickets', 55, '-')
+        header = cFormatter.fh_centerText('改扭蛋券', 55, '-')
         cFormatter.print(Color.DEBUG, header)
         self.fh_completerInfo(False)
 
@@ -1141,8 +1141,8 @@ class Rogue:
         for key, name in voucherTypes.items():
             formattedName = f'{Fore.YELLOW}{name}{Style.RESET_ALL}'
             currentAmount = gameData.get('voucherCounts', {}).get(key, '0')
-            promptMessage = f'How many {formattedName}? (Currently have {currentAmount})\n'
-            maxBound = 999
+            promptMessage = f'多少 {formattedName}? (现有 {currentAmount})\n'
+            maxBound = 9999
             try:
                 while True:
                     value = fh_getIntegerInput(promptMessage, 0, maxBound, softCancel=True, allowSkip=True)
@@ -1164,7 +1164,7 @@ class Rogue:
             cFormatter.print(Color.YELLOW, 'Changes saved:')
             for item in changedItems:
                 cFormatter.print(Color.YELLOW, item)
-            raise OperationSuccessful('Successfully written Vouchers.')
+            raise OperationSuccessful('成功修改扭蛋券')
         else:
             fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
 
@@ -1805,7 +1805,7 @@ class Rogue:
             fh_appendMessageBuffer(Color.YELLOW, 'Changes saved:')
             for item in changedItems:
                 fh_appendMessageBuffer(Color.INFO, item)
-            raise OperationSuccessful('Successfully added candies to Pokémon.')
+            raise OperationSuccessful('成功添加糖果')
         else:
             fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
 
@@ -1840,12 +1840,12 @@ class Rogue:
         biomeData = self.appData.biomesByID
 
         # Prompt user for biome input
-        header = cFormatter.fh_centerText('Edit Biome', 55, '-')
+        header = cFormatter.fh_centerText('修改地图', 55, '-')
         cFormatter.print(Color.DEBUG, header)
         self.legacy_printBiomes()
         self.fh_completerInfo()
 
-        cFormatter.print(Color.INFO, f'\nCurrent Biome {currentBiomeName}.')
+        cFormatter.print(Color.INFO, f'\n当前地图 {currentBiomeName}.')
         while True:
             try:
                 inputValue = fh_getCompleterInput(
@@ -1912,9 +1912,9 @@ class Rogue:
             formattedName = f'{Fore.YELLOW}{name}{Style.RESET_ALL}'
             currentAmount = gameData.get('pokeballCounts', {}).get(key, '0')
             if currentAmount >= 999:
-                cFormatter.print(Color.INFO, f'Already max amount for {formattedName}.')
+                cFormatter.print(Color.INFO, f'已达上限 {formattedName}.')
                 continue
-            promptMessage = f'How many {formattedName}? (Currently have {currentAmount})\n'
+            promptMessage = f'多少 {formattedName}？ (现有{currentAmount})\n'
             maxBound = 999
             try:
                 while True:
@@ -1935,12 +1935,12 @@ class Rogue:
 
         if changed:
             self.__fh_writeJSONData(gameData, f'slot_{self.slot}.json')
-            fh_appendMessageBuffer(Color.YELLOW, 'Changes saved:')
+            fh_appendMessageBuffer(Color.YELLOW, '修改已保存:')
             for item in changedItems:
                 fh_appendMessageBuffer(Color.INFO, item)
-            raise OperationSuccessful('Successfully written Pokeballs. For more information scroll up.')
+            raise OperationSuccessful('成功修改球。')
         else:
-            fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
+            fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 
     @dec_handleOperationExceptions
     def f_editMoney(self) -> None:
@@ -1967,18 +1967,18 @@ class Rogue:
         saveData = self.__fh_loadDataFromJSON(f'slot_{self.slot}.json')
 
         if saveData["gameMode"] == 3:
-            fh_appendMessageBuffer(Color.CRITICAL, 'Cannot edit this property on daily runs!')
+            fh_appendMessageBuffer(Color.CRITICAL, '每日挑战禁止修改！')
             return
 
         header = cFormatter.fh_centerText(' Edit Money ', 55, '-')
         cFormatter.print(Color.DEBUG, header)
         self.fh_completerInfo(False)
 
-        promptMessage = 'How many Poke-Dollars do you want? '
-        choice = fh_getIntegerInput(promptMessage, 0, self.__SAFE_BIG_NUMBER, zeroCancel=True)
+        promptMessage = '你想要多少钱？'
+        choice = fh_getIntegerInput(promptMessage, 0, 999999999, zeroCancel=True)
         saveData["money"] = int(choice)
         self.__fh_writeJSONData(saveData, f'slot_{self.slot}.json')
-        raise OperationSuccessful(f'Written {choice} as money value to to local .json.')
+        raise OperationSuccessful(f'{choice}这么多钱已经保存到本地 .json.')
 
     @dec_handleOperationExceptions
     def f_addEggsGenerator(self) -> None:
@@ -2012,43 +2012,43 @@ class Rogue:
         currentEggs = trainerData.get('eggs', [])
         currentAmount = len(currentEggs)
 
-        header = cFormatter.fh_centerText(' Egg Generator ', 55, '-')
+        header = cFormatter.fh_centerText(' 蛋蛋生成器 ', 55, '-')
         cFormatter.print(Color.DEBUG, header)
         self.fh_completerInfo(False)
 
         if currentAmount >= 99:
             userInput = fh_getChoiceInput(
-                'You already have the total max of eggs, replace eggs?',
-                {'1': 'Replace'}, zeroCancel=True
+                '你的蛋已经达到最大数量，替换掉它们？',
+                {'1': '替换'}, zeroCancel=True
             )
         else:
-            cFormatter.print(Color.INFO, f'You have ({currentAmount}) eggs')
+            cFormatter.print(Color.INFO, f'你有 ({currentAmount}) 颗蛋蛋')
             userInput = fh_getChoiceInput(
-                'Should we add or replace?',
-                {'1': 'Replace', '2': 'Add'}, zeroCancel=True
+                '你想替换掉这些蛋还是增加蛋？',
+                {'1': '替换', '2': '增加'}, zeroCancel=True
             )
 
         maxAmount = 99 - currentAmount if userInput == '2' else 99
 
-        count = int(fh_getIntegerInput('How many eggs do you want to generate?', 0, maxAmount, zeroCancel=True))
+        count = int(fh_getIntegerInput('你想要几个蛋？', 0, maxAmount, zeroCancel=True))
         
         tier = int(fh_getChoiceInput(
-            'What tier should the eggs have?',
+            '你想要什么等级的蛋？',
             {'1': format('Common'), '2': format('Rare'), '3': format('Epic'), '4': format('Legendary'), '5': format('Manaphy'), '6': format('Custom: Regional'), '7': format('Custom: Paradox')},
             zeroCancel=True, renderMenu=True
         )) - 1
 
         gachaType = int(fh_getChoiceInput(
-            'What gacha type do you want to have?',
+            '你想要哪种类型的蛋？',
             {'1': format('MoveGacha'), '2': format('LegendaryGacha'), '3': format('ShinyGacha')}, zeroCancel=True, renderMenu=True
         )) - 1  # Adjusting for 0-based index
 
-        hatchWaves = fh_getIntegerInput('After how many waves should they hatch?', 0, 100, zeroCancel=True)
+        hatchWaves = fh_getIntegerInput('孵化波数？', 0, 100, zeroCancel=True)
         variant = 0
-        isShiny: bool = fh_getChoiceInput('Do you want it to be shiny?', {'1': 'Yes', '2': 'No'}, zeroCancel=True) == '1'
+        isShiny: bool = fh_getChoiceInput('是否闪光？', {'1': '是', '2': '否'}, zeroCancel=True) == '1'
         if isShiny:
-            variant: int = int(fh_getIntegerInput('Which shiny tier?', 0, 3))
-            fh_appendMessageBuffer(Color.INFO, 'If some do not hatch in shiny as entered, they don\'t have those shiny variants as of now.')
+            variant: int = int(fh_getIntegerInput('哪种闪？', 0, 3))
+            fh_appendMessageBuffer(Color.INFO, '具有形态变化的宝可梦只有一种闪。')
 
         eggDictionary = eggLogic.constructEggs(tier, gachaType, hatchWaves, count, self.appData.eggTypesData, isShiny, variant)
 
@@ -2058,7 +2058,7 @@ class Rogue:
             trainerData["eggs"].extend(eggDictionary)
 
         self.__fh_writeJSONData(trainerData, 'trainer.json')
-        raise OperationSuccessful(f'{count} eggs successfully generated.')
+        raise OperationSuccessful(f'{count} 蛋蛋已生成。')
 
     @dec_handleOperationExceptions
     def f_unlockAllCombined(self) -> None:
@@ -2068,8 +2068,8 @@ class Rogue:
         self.f_unlockStarters()
         self.f_editAccountStats()
 
-    @dec_handleOperationExceptions
-    def f_editAccountStats(self) -> None:
+    # @dec_handleOperationExceptions
+    # def f_editAccountStats(self) -> None:
         """
         Modifies the statistics and attributes of the player's account.
 
@@ -2201,7 +2201,7 @@ class Rogue:
             cFormatter.print(Color.YELLOW, 'Changes saved:')
             for item in changedItems:
                 cFormatter.print(Color.INFO, item)
-            raise OperationSuccessful('Successfully written Account Stats. For more information scroll up.')
+            raise OperationSuccessful('成功修改账户。')
         else:
             fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
 
@@ -2240,7 +2240,7 @@ class Rogue:
             minBound = 0
             maxBound = 99
             eggAmount = len(trainerData["eggs"])
-            prompt = f'You currently have ({eggAmount}) eggs, after how many waves should they hatch?'
+            prompt = f'你现在有({eggAmount}) 蛋蛋，几波后孵化？'
             hatchWaves = fh_getIntegerInput(prompt, minBound, maxBound, zeroCancel=True)
 
             for egg in trainerData["eggs"]:
@@ -2250,7 +2250,7 @@ class Rogue:
             self.__fh_writeJSONData(trainerData, 'trainer.json')
             changed = True
         else:
-            fh_appendMessageBuffer(Color.INFO, 'You have no eggs to hatch.')
+            fh_appendMessageBuffer(Color.INFO, '你没蛋蛋！')
             return
         
         if changed:
@@ -2264,38 +2264,38 @@ class Rogue:
         edit = ModifierEditor(self.speciesNameByIDHelper, self.moveNamesByIDHelper, self.natureNamesByIDHelper, int(self.slot))
         edit.m_itemMenuPresent(int(self.slot))
 
-    @dec_handleOperationExceptions
-    def f_changeSaveSlot(self):
-        while True:
-            newSlot = fh_getIntegerInput(
-                'Select a slot: ', 1, 5,
-                zeroCancel=True
-            )
-            if self.editOffline or config.debug:
-                filename = f'slot_{newSlot}.json'
-                if int(self.slot) == int(newSlot):
-                    cFormatter.print(Color.ERROR, f'Slot {filename} already loaded.')
-                else:
-                    if self.editOffline:
-                        # Construct the filename
+    # @dec_handleOperationExceptions
+    # def f_changeSaveSlot(self):
+    #     while True:
+    #         newSlot = fh_getIntegerInput(
+    #             'Select a slot: ', 1, 5,
+    #             zeroCancel=True
+    #         )
+    #         if self.editOffline or config.debug:
+    #             filename = f'slot_{newSlot}.json'
+    #             if int(self.slot) == int(newSlot):
+    #                 cFormatter.print(Color.ERROR, f'Slot {filename} already loaded.')
+    #             else:
+    #                 if self.editOffline:
+    #                     # Construct the filename
                         
-                        if os.path.exists(filename):
-                            self.slot = newSlot
-                        else:
-                            cFormatter.print(Color.ERROR, f'File {filename} does not exist. Please select another slot.')
-            else:
-                self.f_getSlotData(int(newSlot))
-            raise OperationSuccessful(f'Changed slot to slot_{newSlot}.json')
+    #                     if os.path.exists(filename):
+    #                         self.slot = newSlot
+    #                     else:
+    #                         cFormatter.print(Color.ERROR, f'File {filename}不存在。 Please select another slot.')
+    #         else:
+    #             self.f_getSlotData(int(newSlot))
+    #         raise OperationSuccessful(f'Changed slot to slot_{newSlot}.json')
 
     def legacy_pokedex(self) -> None:
         species = [f'{member.value}: {member.name}' for member in self.speciesNameByID]
         cFormatter.print(Color.WHITE, '\n'.join(species))
-        fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
+        # fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
         
     def legacy_moves(self) -> None:
         moves = [f'{member.value}: {member.name}' for member in self.moveNamesById]
         cFormatter.print(Color.WHITE, '\n'.join(moves))
-        fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
+        # fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
 
     def legacy_natures(self) -> None:  
         natures = [f'{member.value}: {member.name}' for member in self.natureData]
@@ -2325,8 +2325,8 @@ class Rogue:
     @staticmethod
     def fh_completerInfo(id=True):
         if id:
-            cFormatter.print(Color.DEBUG, 'You can type either the name or ID. 0 will cancel, but save done changes.')
-        cFormatter.print(Color.DEBUG, 'Type `exit` or `cancel` or press STRG+C to cancel without saves.')
+            cFormatter.print(Color.DEBUG, '请输入宝可梦编号或者名称')
+        cFormatter.print(Color.DEBUG, '输入exit或者cancel或者ctrl+c来取消修改')
 
     def __fh_writeJSONData(self, data: Dict[str, Any], filename: str, showSuccess: bool = False) -> None:
         """
@@ -2353,7 +2353,7 @@ class Rogue:
             with open(filename, 'w') as f:
                 json.dump(data, f, indent=4)
                 if showSuccess:
-                    cFormatter.print(Color.BRIGHT_GREEN, 'Written to local data. Do not forget to apply to server when done!')
+                    cFormatter.print(Color.BRIGHT_GREEN, '已保存至本地，别忘记最后上传到线上！')
         except Exception as e:
             cFormatter.print(Color.CRITICAL, f'Error in function __write_data(): {e}', isLogging=True)
         

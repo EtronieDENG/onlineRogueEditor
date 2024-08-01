@@ -87,8 +87,8 @@ def fh_handleErrorResponse(response: requests.Response) -> Dict[str, str]:
     """
     
     if response.status_code == 200:
-        cFormatter.print(Color.BRIGHT_GREEN, 'Response 200 - That seemed to have worked!')
-        cFormatter.print(Color.BRIGHT_GREEN, 'If it doesn\'t apply in-game, refresh without cache or try a private tab!')
+        cFormatter.print(Color.BRIGHT_GREEN, '修改成功！')
+        cFormatter.print(Color.BRIGHT_GREEN, '如果没成功，请清空浏览器缓存或者隐私模式打开游戏')
     elif response.status_code == 400:
         cFormatter.print(Color.WARNING, 'Response 400 - Bad Request: The server could not understand the request due to invalid syntax.', isLogging=True)
     elif response.status_code == 401:
@@ -291,8 +291,8 @@ class requestsLogic:
         data = {'username': self.username, 'password': self.password}
         try:
             headers = HeaderGenerator.fh_generateHeaders()
-            cFormatter.print(Color.DEBUG, 'Adding delay to appear more natural to the server. Please stand by...')
-            cFormatter.print(Color.DEBUG, '(If it takes longer than 5 Seconds its not on us.)')
+            # cFormatter.print(Color.DEBUG, 'Adding delay to appear more natural to the server. Please stand by...')
+            # cFormatter.print(Color.DEBUG, '(If it takes longer than 5 Seconds its not on us.)')
             response = self.session.post(self.LOGIN_URL, headers=headers, data=data, verify=useCaCert)
             del data, self.username, self.password
             sleep(random.randint(3, 5))
@@ -300,15 +300,15 @@ class requestsLogic:
 
             loginResponse = response.json()
             self.token = loginResponse.get('token')
-            cFormatter.fh_printSeperators(30, '-')
+            # cFormatter.fh_printSeperators(30, '-')
             self.sessionId = self.calcSessionId()
-            cFormatter.print(Color.GREEN, 'Login successful.')
+            # cFormatter.print(Color.GREEN, 'Login successful.')
             formattedStatusCode = Color.BRIGHT_GREEN if response.status_code == 200 else Color.BRIGHT_RED
-            cFormatter.print(formattedStatusCode, f'HTTP Status Code: {response.status_code}')
-            cFormatter.print(Color.CYAN, f'Response URL: {response.request.url}', isLogging=True)
+            # cFormatter.print(formattedStatusCode, f'HTTP Status Code: {response.status_code}')
+            # cFormatter.print(Color.CYAN, f'Response URL: {response.request.url}', isLogging=True)
             filteredHeaders = {key: value for key, value in response.headers.items() if key != 'Report-To'}
-            cFormatter.print(Color.CYAN, f'Response Headers: {filteredHeaders}', isLogging=True)
-            cFormatter.fh_printSeperators(30, '-')
+            # cFormatter.print(Color.CYAN, f'Response Headers: {filteredHeaders}', isLogging=True)
+            # cFormatter.fh_printSeperators(30, '-')
             return True
 
         except requests.RequestException:

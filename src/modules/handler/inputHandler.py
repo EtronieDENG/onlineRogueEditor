@@ -36,11 +36,11 @@ def fh_getChoiceInput(promptMesage: str, choices: dict, renderMenu: bool = False
     """
     if renderMenu:
         actions = "\n".join([f'{idx + 1}: {desc}' for idx, desc in enumerate(choices.values())])
-        fullPrompt = f'{promptMesage}\n{actions}\nSelect a option (0: Cancel): '
+        fullPrompt = f'{promptMesage}\n{actions}\nSelect a option (0: 取消): '
     else:
         actions = " | ".join([f'{idx + 1}: {desc}' for idx, desc in enumerate(choices.values())])
         if zeroCancel or softCancel:
-            fullPrompt = f'{promptMesage} (0: Cancel | {actions}): '
+            fullPrompt = f'{promptMesage} (0: 取消 | {actions}): '
         else:
             fullPrompt = f'{promptMesage} ({actions}): '
 
@@ -86,10 +86,10 @@ def fh_getIntegerInput(promptMessage: str, minBound: int, maxBound: int, zeroCan
     """
     if zeroCancel:
         minBound = 0
-        fullPrompt = f'{promptMessage} (0: Cancel | 1 - {maxBound} | "skip"): ' if allowSkip else f'{promptMessage} (0: Cancel | 1 - {maxBound}): '
+        fullPrompt = f'{promptMessage} (0: 取消 | 1 - {maxBound} | "skip"): ' if allowSkip else f'{promptMessage} (0: 取消 | 1 - {maxBound}): '
     if softCancel: 
         minBound = 0
-        fullPrompt = f'{promptMessage} (0: Save & Cancel | 1 - {maxBound} | "skip"): ' if allowSkip else f'{promptMessage} (0: Save & Cancel | 1 - {maxBound}): '
+        fullPrompt = f'{promptMessage} (0: 保存 & 取消 | 1 - {maxBound} | "skip"): ' if allowSkip else f'{promptMessage} (0: 保存 & 取消 | 1 - {maxBound}): '
     else:
         fullPrompt = f'{promptMessage} ({minBound} - {maxBound}): '
 
@@ -135,7 +135,7 @@ def fh_getCompleterInput(promptMessage: str, choices: dict, zeroCancel: bool = F
     """
     fullPrompt = f'{promptMessage}: '
     if zeroCancel or softCancel:
-        fullPrompt = f'{promptMessage} (0: Cancel): '
+        fullPrompt = f'{promptMessage} (0: 取消): '
 
     # Create a WordCompleter from the keys of choices dictionary
     completer = WordCompleter(choices.keys(), ignore_case=True)

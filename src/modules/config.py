@@ -170,7 +170,7 @@ def f_checkForUpdates(requests: requests, datetime: datetime, timedelta: timedel
             print(f'{Fore.YELLOW}It is highly recommended to update the source code. Some things might not be working as expected.{Style.RESET_ALL}')
             print(f'{Fore.YELLOW}------------------------------------------------------------{Style.RESET_ALL}')
         else:
-            print(f'{Fore.GREEN}No updates found.')
+            print(f'{Fore.GREEN}没有更新内容。')
 
     except ValueError as ve:
         print(f'{Fore.RED}Couldnt resolve check_for_updates() - ValueError occurred: {ve}')
@@ -192,15 +192,11 @@ def f_printWelcomeText() -> None:
     - utilities.cFormatter: Prints colored console output for initialization messages.
     """
     print(f'{Fore.GREEN}<pyRogue {version}>')
-    print(f'{Fore.GREEN}We create base-backups on every login and further backups every time you start or choose so manually.')
-    print(f'{Fore.GREEN}When changes do not seem to apply, refresh without cache / use a private tab.')
-    print(f'{Fore.GREEN}Otherwise please visit {repoURL} and report the issue.')
-    print(f'{Fore.YELLOW}Please refer to SECURITY.md if you have security concerns.')
-    print('------------------------------------------------------------')
-    print(f'{Fore.MAGENTA}{Style.BRIGHT}1: Using no browser with requests.')
-    print(f'{Fore.MAGENTA}{Style.BRIGHT}2: Using own browser with requests.')
-    print(f'{Fore.MAGENTA}{Style.BRIGHT}3: Using own browser with JavaScript.')
-    print(f'{Fore.MAGENTA}{Style.BRIGHT}4: Just edit an existing trainer.json')
+    # print(f'{Fore.GREEN}We create base-backups on every login and further backups every time you start or choose so manually.')
+    # print(f'{Fore.GREEN}When changes do not seem to apply, refresh without cache / use a private tab.')
+    # print(f'{Fore.GREEN}Otherwise please visit {repoURL} and report the issue.')
+    # print(f'{Fore.YELLOW}Please refer to SECURITY.md if you have security concerns.')
+    print(f'{Fore.GREEN}如果更改不生效，请清空缓存或者隐私模式')
 
 def f_printHelp() -> None:
     """

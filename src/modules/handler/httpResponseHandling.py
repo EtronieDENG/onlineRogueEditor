@@ -15,7 +15,7 @@ class HTTPEmptyResponse(Exception):
 
 # Custom status messages for specific HTTP status codes
 statusMessages = {
-    200: (Color.BRIGHT_GREEN, 'Response 200 - That seemed to have worked!'),
+    200: (Color.BRIGHT_GREEN, 'Response 200 - 看起来成功了！'),
     400: (Color.WARNING, 'Response 400 - Bad Request: The server could not understand the request due to invalid syntax. This is usually related to wrong credentials.'),
     401: (Color.BRIGHT_RED, 'Response 401 - Unauthorized: Authentication is required and has failed or has not yet been provided.'),
     403: (Color.BRIGHT_RED, 'Response 403 - Forbidden. We have no authorization to access the resource.'),

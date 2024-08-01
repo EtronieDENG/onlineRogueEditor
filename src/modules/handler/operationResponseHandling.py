@@ -63,7 +63,7 @@ class OperationCancel(Exception):
         if message:
             self.message = message
         else:
-            self.message = 'Operation canceled.'
+            self.message = '操作取消'
         super().__init__(self.message)
 
 # ==============================================
@@ -75,7 +75,7 @@ class OperationSuccessful(Exception):
         if message:
             self.message = message
         else:
-            self.message = 'Operation succesful.'
+            self.message = '操作成功'
         super().__init__(self.message)
 
 # ==============================================
