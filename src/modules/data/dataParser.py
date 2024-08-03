@@ -11,6 +11,7 @@ import json
 from enum import Enum
 from dataclasses import dataclass, field, asdict
 from typing import List, Optional, Any, Dict, Union
+from modules import config
 from modules.config import dataDirectory
 from colorama import Fore, Style
 

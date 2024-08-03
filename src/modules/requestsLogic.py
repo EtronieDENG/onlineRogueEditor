@@ -265,10 +265,10 @@ class requestsLogic:
             # cFormatter.fh_printSeperators(30, '-')
             self.sessionId = self.calcSessionId()
             # cFormatter.print(Color.GREEN, 'Login successful.')
-            formattedStatusCode = Color.BRIGHT_GREEN if response.status_code == 200 else Color.BRIGHT_RED
+            # formattedStatusCode = Color.BRIGHT_GREEN if response.status_code == 200 else Color.BRIGHT_RED
             # cFormatter.print(formattedStatusCode, f'HTTP Status Code: {response.status_code}')
             # cFormatter.print(Color.CYAN, f'Response URL: {response.request.url}', isLogging=True)
-            filteredHeaders = {key: value for key, value in response.headers.items() if key != 'Report-To'}
+            # filteredHeaders = {key: value for key, value in response.headers.items() if key != 'Report-To'}
             # cFormatter.print(Color.CYAN, f'Response Headers: {filteredHeaders}', isLogging=True)
             # cFormatter.fh_printSeperators(30, '-')
             return True

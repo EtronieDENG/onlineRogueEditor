@@ -922,7 +922,7 @@ class Rogue:
 
         if not dexId:
             inputValue = fh_getCompleterInput(
-                promptMessage='Write either the ID or the Name of the Species',
+                promptMessage='请输入宝可梦名称或者编号',
                 choices={**{member.name.lower(): member for member in self.appData.starterNameByID}, 
                         **{str(member.value): member for member in self.appData.starterNameByID}},
                 softCancel=True
@@ -967,12 +967,12 @@ class Rogue:
         combinedFormIDs = dataParser.fh_getCombinedIDs(includeStarter=True, onlyNormalForms=True)
 
         self.fh_completerInfo()
-        cFormatter.print(Color.INFO, f'Editing {dexName}')
+        cFormatter.print(Color.INFO, f'正在修改 {dexName}')
         while True:
             try:
                 cFormatter.print(Color.INFO, menuDisplay)
                 inputValue = fh_getCompleterInput(
-                    'Choose attribute to edit:',
+                    '想修改啥:',
                     {**optionList, **nameToKey},
                     softCancel=True
                 )
@@ -986,8 +986,8 @@ class Rogue:
                 cFormatter.fh_printSeperators(55, '-', Color.INFO)
 
                 if action == 'Unlock all forms':
-                    formChoice = fh_getChoiceInput('Do you want to unlock all forms of the Species? (All forms are Tier 3 shinies)', {'1': '是', '2': '否'}, zeroCancel=True) == '1'
-                    shinyChoice = fh_getChoiceInput('Do you want Tier 3 shinies?', {'1': '是', '2': '否'}, zeroCancel=True) == '1'
+                    formChoice = fh_getChoiceInput('你想要全形态吗? ', {'1': '是', '2': '否'}, zeroCancel=True) == '1'
+                    shinyChoice = fh_getChoiceInput('你想解锁全闪吗?', {'1': '是', '2': '否'}, zeroCancel=True) == '1'
 
                     if formChoice and any(str(dexId) == str(form["speciesID"]) for form in combinedFormIDs):
                         for form in combinedFormIDs:
@@ -1002,32 +1002,32 @@ class Rogue:
                     changed = True
 
                 elif action == 'Set caught count':
-                    caught = fh_getIntegerInput('How many of this Species have you caught?', 1, self.__MAX_BIG_INT, zeroCancel=True)
+                    caught = fh_getIntegerInput('你抓了几只？', 1, self.__MAX_BIG_INT, zeroCancel=True)
                     gameData["dexData"][str(dexId)]["caughtCount"] = int(caught)
                     changedItems.append(f'Caught count: {caught}')
                     changed = True
 
                 elif action == 'Set hatched count':
-                    hatched = fh_getIntegerInput('How many of this Species have hatched from eggs?', 0, self.__MAX_BIG_INT, zeroCancel=True)
+                    hatched = fh_getIntegerInput('你孵了几只？', 0, self.__MAX_BIG_INT, zeroCancel=True)
                     gameData["dexData"][str(dexId)]["hatchedCount"] = int(hatched)
                     changedItems.append(f'Hatched count: {hatched}')
                     changed = True
 
                 elif action == 'Set seen count':
-                    seenCount = fh_getIntegerInput('How many of this Species have you seen?', 0, self.__MAX_BIG_INT, zeroCancel=True)
+                    seenCount = fh_getIntegerInput('你遇到过几只？', 0, self.__MAX_BIG_INT, zeroCancel=True)
                     gameData["dexData"][str(dexId)]["seenCount"] = int(seenCount)
                     changedItems.append(f'Seen count: {seenCount}')
                     changed = True
 
                 elif action == 'Set candies':
-                    candies = fh_getIntegerInput('How many candies do you want?', 0, self.__MAX_BIG_INT, zeroCancel=True)
+                    candies = fh_getIntegerInput('多少糖果？', 0, self.__MAX_BIG_INT, zeroCancel=True)
                     gameData["starterData"][str(dexId)]["candyCount"] = int(candies)
                     changedItems.append(f'Candies: {candies}')
                     changed = True
 
                 elif action == 'Set nature':
                     nature = fh_getCompleterInput(
-                        promptMessage='Write either the ID or the Name of the Nature',
+                        promptMessage='请输入性格编号或者名称',
                         choices={**{member.name.lower(): member for member in self.appData.natureData}, 
                                 **{str(member.value): member for member in self.appData.natureData}},
                         softCancel=True
@@ -1038,20 +1038,20 @@ class Rogue:
 
                 elif action == 'Toggle passive':
                     if str(dexId) in noPassives:
-                        cFormatter.print(Color.INFO, 'This Species has no passive.')
+                        cFormatter.print(Color.INFO, '这家伙没被动')
                     else:
                         if gameData["starterData"][str(dexId)]["passiveAttr"] == 3:
                             gameData["starterData"][str(dexId)]["passiveAttr"] = 0
                             cFormatter.print(Color.INFO, 'Passive deactivated.')
-                            changedItems.append('Passive deactivated.')
+                            changedItems.append('被动已取消。')
                         else:
                             gameData["starterData"][str(dexId)]["passiveAttr"] = 3
                             cFormatter.print(Color.INFO, 'Passive activated.')
-                            changedItems.append('Passive activated.')
+                            changedItems.append('被动已激活')
                         changed = True
 
                 elif action == 'Set cost reduction':
-                    costReduce = fh_getIntegerInput('How much do you want to reduce the cost? 1-20 - 0 doesn\'t touch existing values', 0, 20)
+                    costReduce = fh_getIntegerInput('想减多少费用？1-20,建议2', 0, 20)
                     if int(costReduce) > 0:
                         gameData["starterData"][str(dexId)]["valueReduction"] = int(costReduce)
                         changedItems.append(f'Cost reduction: {costReduce}')
@@ -1060,21 +1060,21 @@ class Rogue:
                         cFormatter.print(Color.INFO, 'Skipping cost reduce.')
 
                 elif action == 'Set abilities':
-                    ability = fh_getChoiceInput('Do you want to unlock all abilities?', {'1': '是', '2': '否'}, zeroCancel=True)
+                    ability = fh_getChoiceInput('你想要解锁全特性吗？', {'1': '是', '2': '否'}, zeroCancel=True)
                     abilityAttr = 7 if ability == '1' else 0
                     gameData["starterData"][str(dexId)]["abilityAttr"] = abilityAttr
                     changed = True
                     changedItems.append(f'Abilities: {"All unlocked" if abilityAttr == 7 else "Default"}')
 
                 elif action == 'Set IVs':
-                    cFormatter.print(Color.INFO, 'Choose a value between 1 and 31 for your IVs (Species Stats).')
+                    cFormatter.print(Color.INFO, '设定身材（1-31）')
                     ivs = [
-                        int(fh_getIntegerInput('SpA IVs', 1, 31, zeroCancel=True)),
-                        int(fh_getIntegerInput('DEF IVs', 1, 31, zeroCancel=True)),
-                        int(fh_getIntegerInput('Attack IVs', 1, 31, zeroCancel=True)),
-                        int(fh_getIntegerInput('HP IVs', 1, 31, zeroCancel=True)),
-                        int(fh_getIntegerInput('Spe IVs', 1, 31, zeroCancel=True)),
-                        int(fh_getIntegerInput('Def IVs', 1, 31, zeroCancel=True))
+                        int(fh_getIntegerInput('特攻', 1, 31, zeroCancel=True)),
+                        int(fh_getIntegerInput('特防', 1, 31, zeroCancel=True)),
+                        int(fh_getIntegerInput('物攻', 1, 31, zeroCancel=True)),
+                        int(fh_getIntegerInput('血', 1, 31, zeroCancel=True)),
+                        int(fh_getIntegerInput('速度', 1, 31, zeroCancel=True)),
+                        int(fh_getIntegerInput('物防', 1, 31, zeroCancel=True))
                     ]
                     gameData["dexData"][str(dexId)]["ivs"] = ivs
                     changed = True
@@ -1093,7 +1093,7 @@ class Rogue:
                 cFormatter.print(Color.INFO, item)
             raise OperationSuccessful('成功修改全图鉴')
         else:
-            fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
+            fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 
     @dec_handleOperationExceptions
     def f_addTicket(self) -> None:
@@ -1166,7 +1166,7 @@ class Rogue:
                 cFormatter.print(Color.YELLOW, item)
             raise OperationSuccessful('成功修改扭蛋券')
         else:
-            fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
+            fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 
     @dec_handleOperationExceptions
     def f_editParty(self) -> None:
@@ -1246,7 +1246,7 @@ class Rogue:
                     cFormatter.print(Color.YELLOW, header)
                     self.fh_completerInfo()
                     inputValue = fh_getCompleterInput(
-                        promptMessage='Write either the ID or the Name of the Species',
+                        promptMessage='请输入宝可梦名称或者编号',
                         choices={**{member.name.lower(): member for member in self.appData.speciesNameByID},
                                 **{str(member.value): member for member in self.appData.speciesNameByID}},
                         softCancel=True
@@ -1362,7 +1362,7 @@ class Rogue:
                     self.fh_completerInfo()
                     cFormatter.print(Color.GREEN, f'Editing {selectedSpecies["moves"][selectedMoveIndex]} in Slot({selectedMoveIndex+1}) on {selectedSpecies["name"]}') # how to print selected move name
                     newMove = fh_getCompleterInput(
-                        promptMessage='Write either the ID or the Name of the Move.',
+                        promptMessage='请输入蛋招名称或者编号.',
                         choices={**{member.name.lower(): member for member in self.appData.movesByID}, 
                                 **{str(member.value): member for member in self.appData.movesByID}},
                         softCancel=True
@@ -1378,9 +1378,9 @@ class Rogue:
                 elif action == 'changeNature':
                     self.legacy_natureSlot()
                     self.fh_completerInfo()
-                    cFormatter.print(Color.DEBUG, f'Current Nature: {selectedSpecies["nature"]}')
+                    cFormatter.print(Color.DEBUG, f'当前性格: {selectedSpecies["nature"]}')
                     natureSlot = fh_getCompleterInput(
-                        promptMessage='Write either the ID or the Name of the Nature.',
+                        promptMessage='请输入性格编号或者名称.',
                         choices={**{member.name.lower(): member for member in self.appData.natureDataSlots}, 
                                 **{str(member.value): member for member in self.appData.natureDataSlots}},
                         softCancel=True
@@ -1493,10 +1493,10 @@ class Rogue:
             for item in changedItems:
                 cFormatter.print(Color.INFO, item)
             self.__fh_writeJSONData(slotData, filename)
-            raise OperationSuccessful('PartyEditor succesfully finished.')
+            raise OperationSuccessful('成功修改队伍。')
         else:
-            cFormatter.print(Color.INFO, 'No changes made.')
-            fh_appendMessageBuffer(Color.INFO, 'No changes made.')
+            cFormatter.print(Color.INFO, '未修改。')
+            fh_appendMessageBuffer(Color.INFO, '未修改。')
 
     @dec_handleOperationExceptions
     def f_unlockGamemodes(self) -> None:
@@ -1633,7 +1633,7 @@ class Rogue:
                 cFormatter.print(Color.INFO, f'Added {key} with timestamp {value}.')
             raise OperationSuccessful('Successfully updated achievements.')
         else:
-            fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
+            fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 
     @dec_handleOperationExceptions
     def f_unlockVouchers(self) -> None:
@@ -1727,7 +1727,7 @@ class Rogue:
                 cFormatter.print(Color.INFO, f'Added {key} with timestamp {value}.')
             raise OperationSuccessful('Successfully updated vouchers.  For more information scroll up.')
         else:
-            fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
+            fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 
     @dec_handleOperationExceptions
     def f_addCandies(self) -> None:
@@ -1769,7 +1769,7 @@ class Rogue:
             try:
                 while True:
                     inputValue = fh_getCompleterInput(
-                        promptMessage='Write either the ID or the Name of the Species',
+                        promptMessage='请输入宝可梦名称或者编号',
                         choices={**{member.name.lower(): member for member in self.appData.starterNameByID}, 
                                 **{str(member.value): member for member in self.appData.starterNameByID}},
                         softCancel=True
@@ -1778,13 +1778,13 @@ class Rogue:
                     currentCandies = gameData["starterData"][str(inputValue.value)]["candyCount"]
 
                     if int(currentCandies) >= 999:
-                        cFormatter.print(Color.WARNING, f'{inputValue.name.title()} already has the maximum number of candies (999).')
+                        cFormatter.print(Color.WARNING, f'{inputValue.name.title()} 已达糖果上限(999).')
                     else:
                         break  # Exit the loop if a valid Pokémon is selected
 
                 # Prompt for number of candies using fh_getIntegerInput method
                 candies = fh_getIntegerInput(
-                    promptMessage=f'How many candies do you want to add?\n You currently have {currentCandies} on {inputValue.name.title()}. (0 to cancel):',
+                    promptMessage=f'你要多少糖果?\n 你现在{inputValue.name.title()} 有 {currentCandies}颗糖。 (0取消):',
                     minBound=0,
                     maxBound=999,  # Adjust maximum candies as needed
                     zeroCancel=True
@@ -1795,7 +1795,7 @@ class Rogue:
                 changedItems.append(f'{inputValue.name.title()}: {candies}')
                 changed = True
 
-                cFormatter.print(Color.DEBUG, f'Added {candies} candies to {pokeName}.')
+                cFormatter.print(Color.DEBUG, f'已加 {candies} 颗糖果给 {pokeName}。')
 
             except OperationSoftCancel:
                 break
@@ -1807,7 +1807,7 @@ class Rogue:
                 fh_appendMessageBuffer(Color.INFO, item)
             raise OperationSuccessful('成功添加糖果')
         else:
-            fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
+            fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 
     @dec_handleOperationExceptions
     def f_editBiome(self) -> None:
@@ -2048,7 +2048,7 @@ class Rogue:
         isShiny: bool = fh_getChoiceInput('是否闪光？', {'1': '是', '2': '否'}, zeroCancel=True) == '1'
         if isShiny:
             variant: int = int(fh_getIntegerInput('哪种闪？', 0, 3))
-            fh_appendMessageBuffer(Color.INFO, '具有形态变化的宝可梦只有一种闪。')
+            fh_appendMessageBuffer(Color.INFO, '提示：具有形态变化的宝可梦只有一种闪。')
 
         eggDictionary = eggLogic.constructEggs(tier, gachaType, hatchWaves, count, self.appData.eggTypesData, isShiny, variant)
 
@@ -2203,7 +2203,7 @@ class Rogue:
                 cFormatter.print(Color.INFO, item)
             raise OperationSuccessful('成功修改账户。')
         else:
-            fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
+            fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 
     @dec_handleOperationExceptions
     def f_editHatchWaves(self) -> None:
@@ -2256,7 +2256,7 @@ class Rogue:
         if changed:
             raise OperationSuccessful(f'Egg-hatchwaves set to {hatchWaves}')
         else:
-            fh_appendMessageBuffer(Color.YELLOW, 'No changes made.')
+            fh_appendMessageBuffer(Color.YELLOW, '未修改。')
             
     @dec_handleOperationExceptions
     def f_submenuItemEditor(self):
@@ -2300,27 +2300,27 @@ class Rogue:
     def legacy_natures(self) -> None:  
         natures = [f'{member.value}: {member.name}' for member in self.natureData]
         cFormatter.print(Color.WHITE, '\n'.join(natures))
-        fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
+        # fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
         
     def legacy_vouchers(self) -> None:
         vouchers = [f'{member.value}: {member.name}' for member in self.vouchersData]
         cFormatter.print(Color.WHITE, '\n'.join(vouchers))
-        fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
+        # fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
 
     def legacy_natureSlot(self) -> None:
         natureSlot = [f'{member.value}: {member.name}' for member in self.natureSlotData]
         cFormatter.print(Color.WHITE, '\n'.join(natureSlot))
-        fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
+        # fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
 
     def legacy_printBiomes(self) -> None:
         biomes = [f'{member.value}: {member.name}' for member in self.biomeNamesById]
         cFormatter.print(Color.WHITE, '\n'.join(biomes))
-        fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
+        # fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
 
     def legacy_printAchievements(self) -> None:
         achivements = [f'{member.value}: {member.name}' for member in self.achievementsData]
         cFormatter.print(Color.WHITE, '\n'.join(achivements))
-        fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
+        # fh_appendMessageBuffer(Color.INFO, 'Information printed. Scroll up or STRG+F to search.')
 
     @staticmethod
     def fh_completerInfo(id=True):
@@ -2405,7 +2405,7 @@ class Rogue:
             self.fh_completerInfo()
             while True:
                 inputValue = fh_getCompleterInput(
-                    promptMessage='Write either the ID or the Name of the Species',
+                    promptMessage='请输入宝可梦名称或者编号',
                     choices={**{member.name.lower(): member for member in self.appData.speciesNameByID},
                             **{str(member.value): member for member in self.appData.speciesNameByID}},
                     softCancel=True

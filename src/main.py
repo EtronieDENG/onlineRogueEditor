@@ -73,11 +73,11 @@ def m_mainMenu(rogue, editOffline: bool = False):
         # (('修改帐号状态', reworked), rogue.f_editAccountStats),
 
         ('修改', 'category'),
-        ((f'{Fore.YELLOW}无中生有蛋蛋们', reworked), rogue.f_addEggsGenerator),
-        ((f'改 {Fore.YELLOW}生蛋回合数', reworked), rogue.f_editHatchWaves),
+        # ((f'{Fore.YELLOW}手动生蛋', reworked), rogue.f_addEggsGenerator),
+        ((f'改 {Fore.YELLOW}孵化回合数', reworked), rogue.f_editHatchWaves),
         ((f'改 {Fore.YELLOW}扭蛋券', reworked), rogue.f_addTicket),
-        ((f'改 {Fore.YELLOW}宝可梦', reworked), rogue.f_editStarter),
-        ((f'改 {Fore.YELLOW}糖果{Style.RESET_ALL}', reworked), rogue.f_addCandies),
+        # ((f'单改 {Fore.YELLOW}宝可梦', reworked), rogue.f_editStarter),
+        # ((f'改 {Fore.YELLOW}糖果{Style.RESET_ALL}', reworked), rogue.f_addCandies),
 
         ('解锁', 'category'),
         ((f'解锁 {Fore.YELLOW} 成就', reworked), rogue.f_unlockAchievements),
@@ -86,12 +86,12 @@ def m_mainMenu(rogue, editOffline: bool = False):
         ((f'解锁 {Fore.YELLOW} 全模式', reworked), rogue.f_unlockGamemodes),
         ((f'解锁 {Fore.YELLOW} 全部', reworked), rogue.f_unlockAllCombined),
 
-        ('修改存档', 'category'),
-        ((f'改 {Fore.YELLOW}队伍', reworked), rogue.f_editParty),
-        ((f'改 {Fore.YELLOW}钱', reworked), rogue.f_editMoney),
-        ((f'改 {Fore.YELLOW}球', reworked), rogue.f_editPokeballs),
-        ((f'改 {Fore.YELLOW}当前地图', reworked), rogue.f_editBiome),
-        ((f'改 {Fore.YELLOW}道具', reworked), rogue.f_submenuItemEditor),
+        # ('修改存档', 'category'),
+        # ((f'改 {Fore.YELLOW}队伍', reworked), rogue.f_editParty),
+        # ((f'改 {Fore.YELLOW}钱', reworked), rogue.f_editMoney),
+        # ((f'改 {Fore.YELLOW}球', reworked), rogue.f_editPokeballs),
+        # ((f'改 {Fore.YELLOW}当前地图', reworked), rogue.f_editBiome),
+        # ((f'改 {Fore.YELLOW}道具', reworked), rogue.f_submenuItemEditor),
 
         ((f'{Fore.YELLOW}保存并更新至线上', useWhenDone), rogue.f_updateAllToServer),
         (('登出', ''), rogue.f_logout),
@@ -109,7 +109,7 @@ def m_mainMenu(rogue, editOffline: bool = False):
         while True:
             validChoices = cFormatter.m_initializeMenu(term)
             fh_printMessageBuffer()
-            userInput = input('Command: ').strip().lower()
+            userInput = input('请输入指令序号: ').strip().lower()
 
             if userInput == 'exit':
                 raise KeyboardInterrupt

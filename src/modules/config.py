@@ -73,8 +73,8 @@ if not os.path.exists(cacertPath):
         cacertPath = False
 
 useCaCert = False if debug else cacertPath
-version: str = 'v0.4.8p'
-title: str = f'<(^.^(< pyRogue {version} >)^.^)>'
+version: str = 'v3.0'
+title: str = f'<< pyRogue_硬核的大D {version} >>'
 owner: str = 'rogueEdit'
 repo: str = 'onlineRogueEditor'
 repoURL: str = f'https://github.com/{owner}/{repo}/'
@@ -159,18 +159,18 @@ def f_checkForUpdates(requests: requests, datetime: datetime, timedelta: timedel
         commits = response.json()  # Parse JSON response
 
         # Extract commit titles and SHAs
-        commitList = [{'sha': commit["sha"], 'message': commit["commit"]["message"]} for commit in commits]
+        # commitList = [{'sha': commit["sha"], 'message': commit["commit"]["message"]} for commit in commits]
 
-        if commitList:
-            print(f'{Fore.YELLOW}********* Outdated source code found. New commits: *********{Style.RESET_ALL}')
-            for commit in commitList:
-                print(f'{Fore.YELLOW}---- Commit Name: ({commit["message"]}{Style.RESET_ALL})')
-                print(f'{Fore.BLUE}------> with SHA ({commit["sha"]}{Style.RESET_ALL})')
-            print(f'{Fore.YELLOW}You can view the latest code here: {repoURL}{Style.RESET_ALL}')
-            print(f'{Fore.YELLOW}It is highly recommended to update the source code. Some things might not be working as expected.{Style.RESET_ALL}')
-            print(f'{Fore.YELLOW}------------------------------------------------------------{Style.RESET_ALL}')
-        else:
-            print(f'{Fore.GREEN}没有更新内容。')
+        # if commitList:
+        #     print(f'{Fore.YELLOW}********* Outdated source code found. New commits: *********{Style.RESET_ALL}')
+        #     for commit in commitList:
+        #         print(f'{Fore.YELLOW}---- Commit Name: ({commit["message"]}{Style.RESET_ALL})')
+        #         print(f'{Fore.BLUE}------> with SHA ({commit["sha"]}{Style.RESET_ALL})')
+        #     print(f'{Fore.YELLOW}You can view the latest code here: {repoURL}{Style.RESET_ALL}')
+        #     print(f'{Fore.YELLOW}It is highly recommended to update the source code. Some things might not be working as expected.{Style.RESET_ALL}')
+        #     print(f'{Fore.YELLOW}------------------------------------------------------------{Style.RESET_ALL}')
+        # else:
+        #     print(f'{Fore.GREEN}没有更新内容。')
 
     except ValueError as ve:
         print(f'{Fore.RED}Couldnt resolve check_for_updates() - ValueError occurred: {ve}')
