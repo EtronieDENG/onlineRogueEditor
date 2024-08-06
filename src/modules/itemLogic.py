@@ -176,7 +176,7 @@ class ModifierType(Enum):
     # Mh Items
     IV_SCANNER = Modifier(args=None, className='IvScannerModifier', player=True, stackCount=1, typeId='IV_SCANNER', shortDescription='Scan enemy IVs', description='Allows scanning the IVs of wild Pokémon. 2 IVs are revealed per stack. The best IVs are shown first.', customName='IV Scanner', customType='Orb', maxStack='3')
     TOXIC_ORB = Modifier(args=[None], className='TurnStatusEffectModifier', player=True, stackCount=1, typeId='TOXIC_ORB', shortDescription='Poison your pokemon', description='Badly poisons its holder at the end of the turn if they do not have a status condition already', customName='Toxic Orb', customType='Orb', maxStack='1')
-    FIRE_ORB = Modifier(args=[None], className='TurnStatusEffectModifier', player=True, stackCount=1, typeId='FIRE_ORB', shortDescription='Burn your pokemon', description='Burns its holder at the end of the turn if they do not have a status condition already.', customName='Fire Orb', customType='Orb', maxStack='1')
+    FLAME_ORB = Modifier(args=[None], className='TurnStatusEffectModifier', player=True, stackCount=1, typeId='FLAME_ORB', shortDescription='Burn your pokemon', description='Burns its holder at the end of the turn if they do not have a status condition already.', customName='Fire Orb', customType='Orb', maxStack='1')
     MAP = Modifier(args=None, className='MapModifier', player=True, stackCount=1, typeId='MAP', description='Choose your path at crossings', customName='Map', customType='Maybe', maxStack='1')
 
     

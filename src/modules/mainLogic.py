@@ -1571,18 +1571,18 @@ class Rogue:
         currentAmount = gameData.get('achvUnlocks', {})
 
         if len(currentAmount) >= len(keysToUpdate):
-            fh_appendMessageBuffer(Color.INFO, 'You already have all achievements.')
-            cFormatter.print(Color.INFO, 'You already have all achievements.')
+            fh_appendMessageBuffer(Color.INFO, '你已经有全成就了')
+            cFormatter.print(Color.INFO, '你已经有全成就了')
             return
         
-        header = cFormatter.fh_centerText('Edit Achievements', 55, '-')
+        header = cFormatter.fh_centerText('修改成就', 55, '-')
         cFormatter.print(Color.DEBUG, header)
         self.fh_completerInfo(False)
 
         # Ask the user if they want to unlock all vouchers or a specific one
         choice = fh_getChoiceInput(
-            promptMesage='Do you want to unlock all achievements or a specific one?',
-            choices={'1': 'All', '2': 'Specific'},
+            promptMesage='你想解锁所有成就还是特定的某一个？',
+            choices={'1': '所有', '2': '特定'},
             zeroCancel=True,
             renderMenu=True
         )
@@ -1609,7 +1609,7 @@ class Rogue:
             while True:
                 try:
                     inputValue = fh_getCompleterInput(
-                        promptMessage='What achievement would you like?',
+                        promptMessage='你想要哪个成就？',
                         choices={**{member.name.lower(): member for member in achievementsData}, 
                                 **{str(member.value): member for member in achievementsData}},
                         softCancel=True
@@ -1630,8 +1630,8 @@ class Rogue:
             self.__fh_writeJSONData(gameData, 'trainer.json', showSuccess=False)
             cFormatter.print(Color.YELLOW, 'Changes saved:')
             for key, value in changedItems:
-                cFormatter.print(Color.INFO, f'Added {key} with timestamp {value}.')
-            raise OperationSuccessful('Successfully updated achievements.')
+                cFormatter.print(Color.INFO, f'已添加 {key} 在 {value}.')
+            raise OperationSuccessful('成功更新成就')
         else:
             fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 
@@ -1664,18 +1664,18 @@ class Rogue:
         currentAmount = gameData.get('voucherUnlocks', {})
 
         if len(currentAmount) >= len(keysToUpdate):
-            fh_appendMessageBuffer(Color.INFO, 'You already have all vouchers.')
-            cFormatter.print(Color.INFO, 'You already have all vouchers.')
+            fh_appendMessageBuffer(Color.INFO, '你已经完成所有挑战')
+            cFormatter.print(Color.INFO, '你已经完成所有挑战。')
             return
         
         header = cFormatter.fh_centerText('Edit Vouchers', 55, '-')
-        cFormatter.print(Color.INFO, 'You already have all vouchers.')
+        cFormatter.print(Color.INFO, '你已经完成所有挑战。')
         cFormatter.print(Color.DEBUG, header)
     
         
         choice = fh_getChoiceInput(
-            promptMesage='Do you want to unlock all vouchers or unlock a specific voucher?',
-            choices={'1': 'All', '2': 'Specific'},
+            promptMesage='你想解锁所有的挑战还是特定的某一个？',
+            choices={'1': '所有', '2': '特定'},
             zeroCancel=True,
             renderMenu=True
         )
@@ -1703,7 +1703,7 @@ class Rogue:
             while True:
                 try:
                     inputValue = fh_getCompleterInput(
-                        promptMessage='What voucher would you like?',
+                        promptMessage='哪个挑战？',
                         choices={**{member.name.lower(): member for member in voucherData}, 
                                 **{str(member.value): member for member in voucherData}},
                         softCancel=True
@@ -1724,8 +1724,8 @@ class Rogue:
             self.__fh_writeJSONData(gameData, 'trainer.json', showSuccess=False)
             cFormatter.print(Color.YELLOW, 'Changes saved:')
             for key, value in changedItems:
-                cFormatter.print(Color.INFO, f'Added {key} with timestamp {value}.')
-            raise OperationSuccessful('Successfully updated vouchers.  For more information scroll up.')
+                cFormatter.print(Color.INFO, f'已添加 {key} 在 {value}.')
+            raise OperationSuccessful('已成功更新挑战。')
         else:
             fh_appendMessageBuffer(Color.YELLOW, '未修改。')
 

@@ -36,7 +36,7 @@ def fh_getChoiceInput(promptMesage: str, choices: dict, renderMenu: bool = False
     """
     if renderMenu:
         actions = "\n".join([f'{idx + 1}: {desc}' for idx, desc in enumerate(choices.values())])
-        fullPrompt = f'{promptMesage}\n{actions}\nSelect a option (0: 取消): '
+        fullPrompt = f'{promptMesage}\n{actions}\n请选择 (0: 取消): '
     else:
         actions = " | ".join([f'{idx + 1}: {desc}' for idx, desc in enumerate(choices.values())])
         if zeroCancel or softCancel:

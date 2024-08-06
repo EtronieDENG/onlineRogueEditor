@@ -191,7 +191,7 @@ def f_printWelcomeText() -> None:
     Modules/Librarys used and for what purpose exactly in each function:
     - utilities.cFormatter: Prints colored console output for initialization messages.
     """
-    print(f'{Fore.GREEN}<pyRogue {version}>')
+    print(f'{Fore.GREEN}<pyRogue_硬核的大D {version}>')
     # print(f'{Fore.GREEN}We create base-backups on every login and further backups every time you start or choose so manually.')
     # print(f'{Fore.GREEN}When changes do not seem to apply, refresh without cache / use a private tab.')
     # print(f'{Fore.GREEN}Otherwise please visit {repoURL} and report the issue.')

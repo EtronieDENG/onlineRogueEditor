@@ -73,11 +73,10 @@ def m_mainMenu(rogue, editOffline: bool = False):
         # (('修改帐号状态', reworked), rogue.f_editAccountStats),
 
         ('修改', 'category'),
-        # ((f'{Fore.YELLOW}手动生蛋', reworked), rogue.f_addEggsGenerator),
         ((f'改 {Fore.YELLOW}孵化回合数', reworked), rogue.f_editHatchWaves),
         ((f'改 {Fore.YELLOW}扭蛋券', reworked), rogue.f_addTicket),
-        # ((f'单改 {Fore.YELLOW}宝可梦', reworked), rogue.f_editStarter),
-        # ((f'改 {Fore.YELLOW}糖果{Style.RESET_ALL}', reworked), rogue.f_addCandies),
+        ((f'改 {Fore.YELLOW}钱', reworked), rogue.f_editMoney),
+        ((f'改 {Fore.YELLOW}球', reworked), rogue.f_editPokeballs),
 
         ('解锁', 'category'),
         ((f'解锁 {Fore.YELLOW} 成就', reworked), rogue.f_unlockAchievements),
@@ -86,12 +85,13 @@ def m_mainMenu(rogue, editOffline: bool = False):
         ((f'解锁 {Fore.YELLOW} 全模式', reworked), rogue.f_unlockGamemodes),
         ((f'解锁 {Fore.YELLOW} 全部', reworked), rogue.f_unlockAllCombined),
 
-        # ('修改存档', 'category'),
-        # ((f'改 {Fore.YELLOW}队伍', reworked), rogue.f_editParty),
-        # ((f'改 {Fore.YELLOW}钱', reworked), rogue.f_editMoney),
-        # ((f'改 {Fore.YELLOW}球', reworked), rogue.f_editPokeballs),
-        # ((f'改 {Fore.YELLOW}当前地图', reworked), rogue.f_editBiome),
-        # ((f'改 {Fore.YELLOW}道具', reworked), rogue.f_submenuItemEditor),
+        ('大极帝', 'category'),
+        ((f'{Fore.YELLOW}手动生蛋', reworked), rogue.f_addEggsGenerator),
+        ((f'单改 {Fore.YELLOW}宝可梦', reworked), rogue.f_editStarter),
+        ((f'改 {Fore.YELLOW}糖果{Style.RESET_ALL}', reworked), rogue.f_addCandies),
+        ((f'改 {Fore.YELLOW}队伍', reworked), rogue.f_editParty),
+        ((f'改 {Fore.YELLOW}当前地图', reworked), rogue.f_editBiome),
+        ((f'改 {Fore.YELLOW}道具', reworked), rogue.f_submenuItemEditor),
 
         ((f'{Fore.YELLOW}保存并更新至线上', useWhenDone), rogue.f_updateAllToServer),
         (('登出', ''), rogue.f_logout),
@@ -135,7 +135,7 @@ def main():
         while True:
             try:
                 config.f_printWelcomeText()
-                loginChoice = int(input('在线还是离线？1:在线，2：离线 '))
+                loginChoice = int(input('在线还是离线？1:在线，2：离线(未完成) '))
                 if loginChoice == 1:
                     username = input('用户名 ')
                     password = pwinput.pwinput(prompt='密码: ', mask='*')
@@ -153,11 +153,15 @@ def main():
                         cFormatter.print(Color.CRITICAL, f'Something went wrong. {e}', isLogging=True)
                 
                 elif loginChoice == 2:
+                    
+                    print(f'loginChoice{loginChoice}')
+                    config.debug = True
                     rogue = Rogue(session, authToken='Invalid Auth Token', editOffline=True)
+                    m_mainMenu(rogue)
                     break
             except KeyboardInterrupt:
                 exit()
-        if loginChoice != 2:
+        if loginChoice == 2:
             del username, password
         m_mainMenu(rogue, editOffline=(loginChoice == 2))
 
