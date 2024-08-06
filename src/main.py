@@ -135,7 +135,7 @@ def main():
         while True:
             try:
                 config.f_printWelcomeText()
-                loginChoice = int(input('在线还是离线？1:在线，2：离线(未完成) '))
+                loginChoice = int(input('在线还是离线？1:在线，2：离线'))
                 if loginChoice == 1:
                     username = input('用户名 ')
                     password = pwinput.pwinput(prompt='密码: ', mask='*')
